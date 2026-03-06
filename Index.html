@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sarathy Content Studio</title>
+
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111111;
+    --surface2: #1a1a1a;
+    --accent: #c8a96e;
+    --accent2: #e8c98e;
+    --text: #f0ece4;
+    --muted: #888880;
+    --border: #222220;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: system-ui, sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    width: 8px; height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.1s;
+  }
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 1px solid rgba(200,169,110,0.4);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    transition: all 0.15s ease;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 24px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(to bottom, rgba(10,10,10,0.95), transparent);
+    backdrop-filter: blur(8px);
+  }
+
+  .nav-logo {
+    font-family: Georgia, serif;
+    font-weight: 800;
+    font-size: 18px;
+    letter-spacing: 0.08em;
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .nav-logo span { color: var(--accent); }
+
+  .nav-links {
+    display: flex;
+    gap: 40px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+
+  .nav-links a:hover { color: var(--accent); }
+
+  .nav-cta {
+    background: var(--accent);
+    color: #0a0a0a !important;
+    padding: 10px 24px;
+    border-radius: 2px;
+    font-weight: 500 !important;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 120px 48px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse 60% 60% at 80% 50%, rgba(200,169,110,0.04) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 20% 80%, rgba(200,169,110,0.03) 0%, transparent 60%);
+  }
+
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image: 
+      linear-gradient(rgba(200,169,110,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(200,169,110,0.03) 1px, transparent 1px);
+    background-size: 80px 80px;
+    mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--accent);
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    opacity: 1;
+    animation: fadeUp 0.8s 0.2s forwards;
+  }
+
+  .hero-tag::before {
+    content: '';
+    width: 24px; height: 1px;
+    background: var(--accent);
+  }
+
+  .hero-title {
+    font-family: Georgia, serif;
+    font-weight: 800;
+    font-size: clamp(48px, 8vw, 112px);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    margin-bottom: 40px;
+    opacity: 1;
+    animation: fadeUp 0.8s 0.4s forwards;
+  }
+
+  .hero-title .line2 {
+    color: var(--accent);
+    font-style: italic;
+  }
+
+  .hero-title .line3 {
+    -webkit-text-stroke: 1px rgba(240,236,228,0.3);
+    color: transparent;
+  }
+
+  .hero-sub {
+    font-size: 18px;
+    color: var(--muted);
+    max-width: 520px;
+    line-height: 1.7;
+    margin-bottom: 48px;
+    opacity: 1;
+    animation: fadeUp 0.8s 0.6s forwards;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    opacity: 1;
+    animation: fadeUp 0.8s 0.8s forwards;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #0a0a0a;
+    padding: 16px 36px;
+    border-radius: 2px;
+    font-family: Georgia, serif;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: all 0.3s;
+    display: inline-block;
+  }
+
+  .btn-primary:hover {
+    background: var(--accent2);
+    transform: translateY(-2px);
+  }
+
+  .btn-secondary {
+    color: var(--muted);
+    font-size: 14px;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 2px;
+    transition: color 0.3s;
+  }
+
+  .btn-secondary:hover { color: var(--text); }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 40px;
+    left: 48px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--muted);
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    opacity: 1;
+    animation: fadeUp 0.8s 1.2s forwards;
+  }
+
+  .scroll-line {
+    width: 40px; height: 1px;
+    background: var(--muted);
+    animation: scrollPulse 2s infinite;
+  }
+
+  /* MARQUEE */
+  .marquee-section {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 0;
+    overflow: hidden;
+    background: var(--surface);
+  }
+
+  .marquee-track {
+    display: flex;
+    gap: 60px;
+    animation: marquee 20s linear infinite;
+    white-space: nowrap;
+  }
+
+  .marquee-item {
+    font-family: Georgia, serif;
+    font-size: 13px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-shrink: 0;
+  }
+
+  .marquee-dot {
+    width: 4px; height: 4px;
+    background: var(--accent);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* WHAT I DO */
+  .section {
+    padding: 120px 48px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    color: var(--accent);
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 60px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+    max-width: 80px;
+  }
+
+  .section-title {
+    font-family: Georgia, serif;
+    font-weight: 800;
+    font-size: clamp(36px, 5vw, 64px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 80px;
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2px;
+  }
+
+  .service-card {
+    background: var(--surface);
+    padding: 48px 40px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+
+  .service-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s;
+  }
+
+  .service-card:hover { background: var(--surface2); }
+  .service-card:hover::before { transform: scaleX(1); }
+
+  .service-num {
+    font-family: Georgia, serif;
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    margin-bottom: 24px;
+  }
+
+  .service-name {
+    font-family: Georgia, serif;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    line-height: 1.2;
+  }
+
+  .service-desc {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  /* PORTFOLIO */
+  .portfolio-section {
+    padding: 120px 48px;
+    background: var(--surface);
+  }
+
+  .portfolio-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 2px;
+    margin-top: 80px;
+  }
+
+  .portfolio-card {
+    position: relative;
+    background: var(--bg);
+    overflow: hidden;
+    group: true;
+  }
+
+  .portfolio-card-inner {
+    padding: 48px 40px;
+    height: 100%;
+    min-height: 280px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid var(--border);
+    transition: border-color 0.3s;
+  }
+
+  .portfolio-card:hover .portfolio-card-inner {
+    border-color: var(--accent);
+  }
+
+  .portfolio-tag {
+    display: inline-block;
+    background: rgba(200,169,110,0.1);
+    color: var(--accent);
+    padding: 4px 12px;
+    border-radius: 2px;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    align-self: flex-start;
+  }
+
+  .portfolio-title {
+    font-family: Georgia, serif;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+
+  .portfolio-desc {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.6;
+    flex: 1;
+    margin-bottom: 32px;
+  }
+
+  .portfolio-arrow {
+    color: var(--accent);
+    font-size: 20px;
+    transition: transform 0.3s;
+    align-self: flex-start;
+  }
+
+  .portfolio-card:hover .portfolio-arrow { transform: translate(4px, -4px); }
+
+  /* PRICING */
+  .pricing-section {
+    padding: 120px 48px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2px;
+    margin-top: 80px;
+  }
+
+  .pricing-card {
+    background: var(--surface);
+    padding: 48px 40px;
+    position: relative;
+    border: 1px solid transparent;
+    transition: all 0.3s;
+  }
+
+  .pricing-card.featured {
+    background: var(--surface2);
+    border-color: var(--accent);
+  }
+
+  .pricing-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-4px);
+  }
+
+  .pricing-badge {
+    display: inline-block;
+    background: var(--accent);
+    color: #0a0a0a;
+    padding: 4px 12px;
+    border-radius: 2px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  .pricing-name {
+    font-family: Georgia, serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+
+  .pricing-price {
+    font-family: Georgia, serif;
+    font-size: 56px;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 8px;
+    color: var(--text);
+  }
+
+  .pricing-price span {
+    font-size: 20px;
+    color: var(--muted);
+    font-weight: 400;
+  }
+
+  .pricing-per {
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 40px;
+  }
+
+  .pricing-divider {
+    height: 1px;
+    background: var(--border);
+    margin-bottom: 32px;
+  }
+
+  .pricing-features {
+    list-style: none;
+    margin-bottom: 40px;
+  }
+
+  .pricing-features li {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 14px;
+  }
+
+  .pricing-features li::before {
+    content: '→';
+    color: var(--accent);
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .pricing-btn {
+    display: block;
+    text-align: center;
+    padding: 14px 24px;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    text-decoration: none;
+    font-family: Georgia, serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: all 0.3s;
+    border-radius: 2px;
+  }
+
+  .pricing-btn:hover, .pricing-card.featured .pricing-btn {
+    background: var(--accent);
+    color: #0a0a0a;
+  }
+
+  /* WHY ME */
+  .why-section {
+    padding: 120px 48px;
+    background: var(--surface);
+  }
+
+  .why-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .why-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+    margin-top: 80px;
+  }
+
+  .why-left {
+    font-family: Georgia, serif;
+    font-size: clamp(28px, 3.5vw, 48px);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+
+  .why-left em {
+    color: var(--accent);
+    font-style: italic;
+  }
+
+  .why-items {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .why-item {
+    padding: 28px 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 24px;
+  }
+
+  .why-num {
+    font-family: Georgia, serif;
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    flex-shrink: 0;
+    padding-top: 3px;
+  }
+
+  .why-content h3 {
+    font-family: Georgia, serif;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .why-content p {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  /* CONTACT */
+  .contact-section {
+    padding: 120px 48px;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .contact-title {
+    font-family: Georgia, serif;
+    font-size: clamp(40px, 7vw, 96px);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
+  }
+
+  .contact-title em {
+    color: var(--accent);
+    font-style: italic;
+  }
+
+  .contact-sub {
+    color: var(--muted);
+    font-size: 18px;
+    margin-bottom: 60px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+  }
+
+  .contact-email {
+    display: inline-block;
+    font-family: Georgia, serif;
+    font-size: clamp(16px, 2.5vw, 28px);
+    font-weight: 700;
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid var(--accent);
+    padding-bottom: 4px;
+    margin-bottom: 60px;
+    transition: opacity 0.3s;
+  }
+
+  .contact-email:hover { opacity: 0.7; }
+
+  .social-links {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+
+  .social-link {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 13px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    transition: color 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .social-link:hover { color: var(--accent); }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 32px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-logo {
+    font-family: Georgia, serif;
+    font-weight: 800;
+    font-size: 16px;
+    letter-spacing: 0.08em;
+  }
+
+  .footer-logo span { color: var(--accent); }
+
+  .footer-copy {
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 1; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.8s, transform 0.8s;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* MOBILE */
+  @media (max-width: 768px) {
+    nav { padding: 20px 24px; }
+    .nav-links { display: none; }
+    .hero { padding: 100px 24px 60px; }
+    .section { padding: 80px 24px; }
+    .portfolio-section { padding: 80px 24px; }
+    .pricing-section { padding: 80px 24px; }
+    .why-section { padding: 80px 24px; }
+    .contact-section { padding: 80px 24px; }
+    footer { padding: 24px; flex-direction: column; gap: 16px; text-align: center; }
+    .why-grid { grid-template-columns: 1fr; gap: 48px; }
+    .cursor, .cursor-ring { display: none; }
+    body { cursor: auto; }
+    .hero-scroll { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Sarathy<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#work">Work</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#contact" class="nav-cta">Let's Talk</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-tag">Sarathy Content Studio</div>
+    <h1 class="hero-title">
+      Your Content<br>
+      <span class="line2">Isn't Converting</span><br>
+      <span class="line3">I Fix That.</span>
+    </h1>
+    <p class="hero-sub">AI-assisted content strategy built for small businesses that want to grow online — not just post and hope for the best.</p>
+    <div class="hero-actions">
+      <a href="#pricing" class="btn-primary">See Packages</a>
+      <a href="#work" class="btn-secondary">View My Work</a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    Scroll
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-section">
+  <div class="marquee-track">
+    <div class="marquee-item"><span class="marquee-dot"></span>SEO Blog Writing</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>Social Media Captions</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>Google Business Profile</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>Brand Voice Strategy</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>Content Calendars</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>AI-Assisted Workflow</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>Human Brand Alignment</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>SEO Blog Writing</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>Social Media Captions</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>Google Business Profile</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>Brand Voice Strategy</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>Content Calendars</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>AI-Assisted Workflow</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>Human Brand Alignment</div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<div id="services">
+  <div class="section">
+    <div class="section-label">What I Do</div>
+    <h2 class="section-title reveal">Content that works.<br>Strategy that converts.</h2>
+    <div class="services-grid">
+      <div class="service-card reveal">
+        <div class="service-num">01</div>
+        <div class="service-name">SEO Blog Writing</div>
+        <div class="service-desc">Long-form articles built to rank on Google and actually be read. Not keyword stuffing — real writing with real strategy.</div>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-num">02</div>
+        <div class="service-name">Social Media Captions</div>
+        <div class="service-desc">Scroll-stopping captions with hooks, brand voice, and soft CTAs that make people act — not just scroll past.</div>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-num">03</div>
+        <div class="service-name">Google Business Profile</div>
+        <div class="service-desc">Local search optimisation through strategic GBP posts that put your business in front of people actively looking for you.</div>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-num">04</div>
+        <div class="service-name">Brand Voice Strategy</div>
+        <div class="service-desc">Every piece sounds like you — not a template. I build your brand voice from scratch and stay consistent across all content.</div>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-num">05</div>
+        <div class="service-name">Content Calendar</div>
+        <div class="service-desc">A full month mapped out in advance. No more scrambling for ideas at 11pm before you need to post.</div>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-num">06</div>
+        <div class="service-name">AI-Assisted Workflow</div>
+        <div class="service-desc">AI handles the speed. I handle the thinking. You get fast delivery without sacrificing the human quality your brand needs.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PORTFOLIO -->
+<div id="work">
+  <div class="portfolio-section">
+    <div class="portfolio-inner">
+      <div class="section-label">Portfolio</div>
+      <h2 class="section-title reveal">Work that speaks<br>for itself.</h2>
+      <div class="portfolio-grid">
+        <div class="portfolio-card reveal">
+          <div class="portfolio-card-inner">
+            <div>
+              <div class="portfolio-tag">Content Strategy</div>
+              <div class="portfolio-title">Coffee Shop Marketing Toolkit</div>
+              <div class="portfolio-desc">Full marketing toolkit for a specialty coffee shop in Chennai — 12 Instagram captions, 5 GBP posts, 15 SEO keywords, a 500-word blog article, and a 2-week content calendar.</div>
+            </div>
+            <div class="portfolio-arrow">↗</div>
+          </div>
+        </div>
+        <div class="portfolio-card reveal">
+          <div class="portfolio-card-inner">
+            <div>
+              <div class="portfolio-tag">SEO Content</div>
+              <div class="portfolio-title">Blog & SEO Writing Samples</div>
+              <div class="portfolio-desc">SEO-optimised blog articles written to rank on Google and actually be read — covering local business niches with keyword strategy built in from the start.</div>
+            </div>
+            <div class="portfolio-arrow">↗</div>
+          </div>
+        </div>
+        <div class="portfolio-card reveal">
+          <div class="portfolio-card-inner">
+            <div>
+              <div class="portfolio-tag">Coming Soon</div>
+              <div class="portfolio-title">More Case Studies</div>
+              <div class="portfolio-desc">New client work being added. Each project showcases real results — not just pretty writing, but content that actually moved the needle for real businesses.</div>
+            </div>
+            <div class="portfolio-arrow">↗</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRICING -->
+<div id="pricing">
+  <div class="pricing-section">
+    <div class="section-label">Pricing</div>
+    <h2 class="section-title reveal">Simple, honest pricing.<br>No surprises.</h2>
+    <div class="pricing-grid">
+      <div class="pricing-card reveal">
+        <div class="pricing-name">Starter</div>
+        <div class="pricing-price">$49<span>/mo</span></div>
+        <div class="pricing-per">For small businesses ready to show up online</div>
+        <div class="pricing-divider"></div>
+        <ul class="pricing-features">
+          <li>8 scroll-stopping social media captions</li>
+          <li>2 Google Business Profile posts</li>
+          <li>Keyword research included</li>
+          <li>Hook + CTA on every caption</li>
+          <li>3-day turnaround</li>
+          <li>2 rounds of revisions</li>
+        </ul>
+        <a href="/cdn-cgi/l/email-protection#5724362536233f2e3924362536233f2e17303a363e3b7934383a" class="pricing-btn">Get Started</a>
+      </div>
+      <div class="pricing-card featured reveal">
+        <div class="pricing-badge">Most Popular</div>
+        <div class="pricing-name">Growth</div>
+        <div class="pricing-price">$99<span>/mo</span></div>
+        <div class="pricing-per">For businesses serious about growing online</div>
+        <div class="pricing-divider"></div>
+        <ul class="pricing-features">
+          <li>16 engagement-optimised captions</li>
+          <li>4 Google Business Profile posts</li>
+          <li>2 SEO blog articles (500 words)</li>
+          <li>Full keyword strategy</li>
+          <li>Brand voice alignment</li>
+          <li>Content calendar guidance</li>
+          <li>3 rounds of revisions</li>
+        </ul>
+        <a href="/cdn-cgi/l/email-protection#4734263526332f3e2934263526332f3e07202a262e2b6924282a" class="pricing-btn">Get Started</a>
+      </div>
+      <div class="pricing-card reveal">
+        <div class="pricing-name">Premium</div>
+        <div class="pricing-price">$179<span>/mo</span></div>
+        <div class="pricing-per">Full content partnership for serious brands</div>
+        <div class="pricing-divider"></div>
+        <ul class="pricing-features">
+          <li>30 high-converting captions</li>
+          <li>8 Google Business Profile posts</li>
+          <li>4 SEO blog articles (500-700 words)</li>
+          <li>Complete SEO optimisation</li>
+          <li>Full monthly content calendar</li>
+          <li>Monthly strategy call (30 mins)</li>
+          <li>Priority WhatsApp support</li>
+          <li>Unlimited revisions within scope</li>
+        </ul>
+        <a href="/cdn-cgi/l/email-protection#582b392a392c3021362b392a392c3021183f35393134763b3735" class="pricing-btn">Get Started</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WHY ME -->
+<div class="why-section">
+  <div class="why-inner">
+    <div class="section-label">Why Sarathy</div>
+    <div class="why-grid">
+      <div class="why-left reveal">
+        Not just a writer.<br>A <em>content partner</em><br>who actually cares<br>about your growth.
+      </div>
+      <div class="why-items">
+        <div class="why-item reveal">
+          <div class="why-num">01</div>
+          <div class="why-content">
+            <h3>AI Speed. Human Soul.</h3>
+            <p>I use AI tools to work faster — but every piece is shaped, reviewed, and aligned to your brand by a human. You get both worlds.</p>
+          </div>
+        </div>
+        <div class="why-item reveal">
+          <div class="why-num">02</div>
+          <div class="why-content">
+            <h3>You Own Everything</h3>
+            <p>All content, all files, all strategy — yours forever. No lock-in, no contracts that trap you.</p>
+          </div>
+        </div>
+        <div class="why-item reveal">
+          <div class="why-num">03</div>
+          <div class="why-content">
+            <h3>Built for Global Businesses</h3>
+            <p>I work specifically with English-speaking markets. I understand your audience, your expectations, and your content standards.</p>
+          </div>
+        </div>
+        <div class="why-item reveal">
+          <div class="why-num">04</div>
+          <div class="why-content">
+            <h3>No Filler. Ever.</h3>
+            <p>Every word is intentional. Every caption has a purpose. No padding, no fluff, no wasted words.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<div id="contact">
+  <div class="contact-section">
+    <div class="section-label" style="justify-content: center;">Get In Touch</div>
+    <h2 class="contact-title reveal">Let's build<br>something <em>real.</em></h2>
+    <p class="contact-sub reveal">Ready to stop being invisible online? One email starts everything.</p>
+    <a href="/cdn-cgi/l/email-protection#d8abb9aab9acb0a1b6abb9aab9acb0a198bfb5b9b1b4f6bbb7b5" class="contact-email reveal"><span class="__cf_email__" data-cfemail="6516041704110d1c0b16041704110d1c250208040c094b060a08">[email&#160;protected]</span></a>
+    <div class="social-links reveal">
+      <a href="https://www.linkedin.com/in/n-sarathy-473418324" target="_blank" class="social-link">
+        ↗ LinkedIn
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Sarathy<span>.</span></div>
+  <div class="footer-copy">© 2026 Sarathy Content Studio. All rights reserved.</div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  // Cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx - 4 + 'px';
+    cursor.style.top = my - 4 + 'px';
+  });
+
+  function animateRing() {
+    rx += (mx - rx - 18) * 0.12;
+    ry += (my - ry - 18) * 0.12;
+    ring.style.left = rx + 'px';
+    ring.style.top = ry + 'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+
+  // Scroll reveal
+  const reveals =
